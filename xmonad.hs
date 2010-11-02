@@ -1,5 +1,3 @@
-import Data.Ratio ((%))
-
 import XMonad
 import XMonad.Config.Desktop (desktopLayoutModifiers)
 import XMonad.Layout.FixedColumn
@@ -28,7 +26,7 @@ tiledLayout = Tall nmaster delta ratio
 -- An 80-column fixed layout for Emacs and terminals.
 fixedLayout = FixedColumn 1 20 80 10
 
-imLayout = withIM (1%6) (Title "Contact List") Grid
+imLayout = withIM (1/6) (Title "Contact List") Grid
 
 myLayout = tiledLayout ||| Mirror tiledLayout
        ||| fixedLayout ||| imLayout ||| Full
