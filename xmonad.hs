@@ -4,16 +4,23 @@ import XMonad.Config.Desktop (desktopLayoutModifiers)
 import XMonad.Layout.FixedColumn
 import XMonad.Layout.Grid
 import XMonad.Layout.IM
+import XMonad.Layout.NoBorders
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.ToggleLayouts
+import qualified XMonad.StackSet as W
 import XMonad.Util.Replace
 import XMonad.Config.Gnome
 import XMonad.ManageHook
 import XMonad.Util.EZConfig
 
-myManageHook :: [ManageHook]
-myManageHook =
-  -- From http://images.ubuntuforums.org/showthread.php?t=975329
-  [ resource  =? "Do"   --> doIgnore
-  ]
+myWorkspaces = ["code", "web", "im"] ++ map show [4..9]
+
+myManageHook = composeAll
+  [ resource =? "Do" --> doIgnore
+  , resource =? "empathy" --> doF (W.shift "im")
+  -- For testing.
+  --, resource =? "xclock" --> doF (W.shift "im")
+  , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
 tiledLayout = Tall nmaster delta ratio
@@ -25,24 +32,41 @@ tiledLayout = Tall nmaster delta ratio
     -- Percent of screen to increment by when resizing panes
     delta   = 3/100
 
--- An 80-column fixed layout for Emacs and terminals.
-fixedLayout = FixedColumn 1 20 80 10
+-- Per-workspace layouts.
+-- Inspired by:
+--   http://kitenet.net/~joey/blog/entry/xmonad_layouts_for_netbooks/
+workspaceLayouts =
+  onWorkspace "code" codeLayouts $
+  onWorkspace "web" webLayouts $
+  onWorkspace "im" imLayouts $
+  defaultLayouts
+  where
+    -- An 80-column fixed layout for Emacs and terminals.
+    fixedLayout = FixedColumn 1 20 80 10
 
-imLayout = withIM (1/6) (Title "Contact List") Grid
+    -- A layout for instant messaging.
+    imLayout = withIM (1/6) (Title "Contact List") Grid
 
-myLayout = tiledLayout ||| Mirror tiledLayout
-       ||| fixedLayout ||| imLayout ||| Full
+    -- Combinations of our available layouts.
+    codeLayouts = fixedLayout ||| tiledLayout ||| Mirror tiledLayout
+    webLayouts = tiledLayout ||| Mirror tiledLayout
+    imLayouts = imLayout
+    defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout
+
+-- Hook up my layouts.
+myLayout = smartBorders $ toggleLayouts Full workspaceLayouts
 
 myKeys = 
-  [("M-g", goToSelected defaultGSConfig)
+  [ ("M-g", goToSelected defaultGSConfig)
+  , ("M-f", sendMessage ToggleLayout)
   ]
 
 myConfig =
-  gnomeConfig {
-    layoutHook = desktopLayoutModifiers myLayout,
-    manageHook = composeAll myManageHook
-             <+> manageHook gnomeConfig,
-    modMask = mod3Mask }
+  gnomeConfig
+    { workspaces = myWorkspaces
+    , layoutHook = desktopLayoutModifiers myLayout
+    , manageHook = myManageHook
+    , modMask = mod3Mask }
   `additionalKeysP` myKeys
 
 main = do
