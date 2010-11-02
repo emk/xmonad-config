@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Actions.GridSelect
 import XMonad.Config.Desktop (desktopLayoutModifiers)
 import XMonad.Layout.FixedColumn
 import XMonad.Layout.Grid
@@ -6,6 +7,7 @@ import XMonad.Layout.IM
 import XMonad.Util.Replace
 import XMonad.Config.Gnome
 import XMonad.ManageHook
+import XMonad.Util.EZConfig
 
 myManageHook :: [ManageHook]
 myManageHook =
@@ -31,10 +33,18 @@ imLayout = withIM (1/6) (Title "Contact List") Grid
 myLayout = tiledLayout ||| Mirror tiledLayout
        ||| fixedLayout ||| imLayout ||| Full
 
+myKeys = 
+  [("M-g", goToSelected defaultGSConfig)
+  ]
+
+myConfig =
+  gnomeConfig {
+    layoutHook = desktopLayoutModifiers myLayout,
+    manageHook = composeAll myManageHook
+             <+> manageHook gnomeConfig,
+    modMask = mod3Mask }
+  `additionalKeysP` myKeys
+
 main = do
   replace
-  xmonad gnomeConfig
-    { layoutHook = desktopLayoutModifiers myLayout,
-      manageHook = manageHook gnomeConfig
-               <+> composeAll myManageHook,
-      modMask = mod3Mask }
+  xmonad myConfig
