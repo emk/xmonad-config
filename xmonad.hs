@@ -13,13 +13,13 @@ import XMonad.Config.Gnome
 import XMonad.ManageHook
 import XMonad.Util.EZConfig
 
-myWorkspaces = ["code", "web", "im"] ++ map show [4..9]
+myWorkspaces = ["1:code", "2:web", "3:im"] ++ map show [4..9]
 
 myManageHook = composeAll
   [ resource =? "Do" --> doIgnore
-  , resource =? "empathy" --> doF (W.shift "im")
+  , resource =? "empathy" --> doShift "3:im"
   -- For testing.
-  --, resource =? "xclock" --> doF (W.shift "im")
+  --, resource =? "xclock" --> doShift "3:im"
   , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
@@ -36,9 +36,9 @@ tiledLayout = Tall nmaster delta ratio
 -- Inspired by:
 --   http://kitenet.net/~joey/blog/entry/xmonad_layouts_for_netbooks/
 workspaceLayouts =
-  onWorkspace "code" codeLayouts $
-  onWorkspace "web" webLayouts $
-  onWorkspace "im" imLayouts $
+  onWorkspace "1:code" codeLayouts $
+  onWorkspace "2:web" webLayouts $
+  onWorkspace "3:im" imLayouts $
   defaultLayouts
   where
     -- An 80-column fixed layout for Emacs and terminals.
