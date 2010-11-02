@@ -19,7 +19,7 @@ myManageHook = composeAll
   [ resource =? "Do" --> doIgnore
   , resource =? "empathy" --> doShift "3:im"
   -- For testing.
-  --, resource =? "xclock" --> doShift "3:im"
+  , resource =? "xclock" --> doShift "3:im"
   , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
