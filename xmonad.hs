@@ -7,11 +7,11 @@ import XMonad.Util.Replace
 import XMonad.Config.Gnome
 import XMonad.ManageHook
 
--- From http://images.ubuntuforums.org/showthread.php?t=975329
 myManageHook :: [ManageHook]
-myManageHook = 
-    [ resource  =? "Do"   --> doIgnore ]
-
+myManageHook =
+  -- From http://images.ubuntuforums.org/showthread.php?t=975329
+  [ resource  =? "Do"   --> doIgnore
+  ]
 
 -- Copied from standard xmonad.hs template config.
 tiledLayout = Tall nmaster delta ratio
