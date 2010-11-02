@@ -6,19 +6,22 @@ import XMonad.Layout.Grid
 import XMonad.Layout.IM
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.SimpleFloat
 import XMonad.Layout.ToggleLayouts
+import XMonad.Layout.WindowArranger
 import qualified XMonad.StackSet as W
 import XMonad.Util.Replace
 import XMonad.Config.Gnome
 import XMonad.ManageHook
 import XMonad.Util.EZConfig
 
-myWorkspaces = ["1:code", "2:web", "3:im"] ++ map show [4..9]
+myWorkspaces = ["1:code", "2:web", "3:im", "4:float"] ++ map show [5..9]
 
 myManageHook = composeAll
   [ resource =? "Do" --> doIgnore
   , resource =? "empathy" --> doShift "3:im"   -- Mysteriously fails.
-  , resource =? "xclock" --> doShift "3:im"    -- For testing.
+  , resource =? "xclock" --> doShift "3:im"    -- For testing.  It works.
+  , resource =? "gimp-2.6" --> doShift "4:float"
   , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
@@ -37,7 +40,8 @@ tiledLayout = Tall nmaster delta ratio
 workspaceLayouts =
   onWorkspace "1:code" codeLayouts $
   onWorkspace "2:web" webLayouts $
-  onWorkspace "3:im" imLayouts $
+  onWorkspace "3:im" imLayout $
+  onWorkspace "4:float" floatLayout $
   defaultLayouts
   where
     -- An 80-column fixed layout for Emacs and terminals.
@@ -46,11 +50,14 @@ workspaceLayouts =
     -- A layout for instant messaging.
     imLayout = withIM (1/6) (Title "Contact List") Grid
 
+    -- A simple floating-window layout.
+    floatLayout = windowArrange simpleFloat
+
     -- Combinations of our available layouts.
     codeLayouts = fixedLayout ||| tiledLayout ||| Mirror tiledLayout
     webLayouts = tiledLayout ||| Mirror tiledLayout
-    imLayouts = imLayout
     defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout
+
 
 -- Hook up my layouts.
 myLayout = smartBorders $ toggleLayouts Full workspaceLayouts
