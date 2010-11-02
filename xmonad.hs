@@ -17,9 +17,8 @@ myWorkspaces = ["1:code", "2:web", "3:im"] ++ map show [4..9]
 
 myManageHook = composeAll
   [ resource =? "Do" --> doIgnore
-  , resource =? "empathy" --> doShift "3:im"
-  -- For testing.
-  , resource =? "xclock" --> doShift "3:im"
+  , resource =? "empathy" --> doShift "3:im"   -- Mysteriously fails.
+  , resource =? "xclock" --> doShift "3:im"    -- For testing.
   , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
