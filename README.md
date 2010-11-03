@@ -2,8 +2,13 @@
 
 This is my personal `xmonad` setup for use on Ubuntu 10.10, running under
 VirtualBox on a Mac laptop.  The inspiration for this configuration comes
-from [xmonad layouts for netbooks][netbook].  See the [xmonad tour][tour]
-for an overview of using `xmonad`.
+from [xmonad layouts for netbooks][netbook].
+
+See the [xmonad tour][tour] for an overview of using `xmonad`.  To better
+understand `xmonad` configuration, you may also want to look at the
+[default `xmonad` configuration][template], the standard [Gnome
+configuration][gnome] and an example [xmobar
+configuration][xmobar_example].
 
 This configurtion includes Gnome panel (on the top) and xmobar (on the
 bottom).  The two docks can be toggled with **M-b**.  This layout defines
@@ -20,6 +25,9 @@ several special workspaces:
 
 [netbook]: http://kitenet.net/~joey/blog/entry/xmonad_layouts_for_netbooks/
 [tour]: http://xmonad.org/tour.html
+[template]: http://haskell.org/haskellwiki/Xmonad/Config_archive/Template_xmonad.hs_(0.9)
+[gnome]: http://code.haskell.org/~sjanssen/xmonad-web/xmonad-docs/xmonad-contrib/src/XMonad-Config-Gnome.html
+[xmobar_example]: http://arjuna.deltoso.net/articles/my-configuration-of-xmonad-window-manager-with-xmobar-and-trayer/
 
 ## Installing xmonad
 
