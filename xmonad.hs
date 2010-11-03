@@ -20,7 +20,8 @@ import XMonad.Util.EZConfig
 
 -- The names of my workspaces.  These are arbitrary, though I need to add
 -- custom key bindings if I want more than 9.
-myWorkspaces = ["1:code", "2:web", "3:im", "4", "5", "6", "7", "8:float", "9"]
+myWorkspaces = ["1:code", "2:web", "3:im", "4", "5",
+                "6", "7:skype", "8:float", "9"]
 
 -- Colors from the Ubuntu 10.10 "Clearlooks" theme.
 themeBackground = "#edeceb"
@@ -31,6 +32,7 @@ themeHighlight  = "#84a9d7"
 myManageHook = composeAll
   [ resource =? "Do"       --> doIgnore           -- Leave Gnome Do alone.
   , resource =? "Pidgin"   --> doShift "3:im"     -- Force to IM workspace.
+  , resource =? "skype"    --> doShift "7:skype"  -- Force to Skype workspace.
   , resource =? "gimp-2.6" --> doShift "8:float"  -- Special-case the GIMP.
   , manageDocks                                   -- For xmobar and gnome-panel.
   , manageHook gnomeConfig ]                      -- Gnome defaults.
@@ -54,6 +56,7 @@ workspaceLayouts =
   onWorkspace "1:code" codeLayouts $
   onWorkspace "2:web" webLayouts $
   onWorkspace "3:im" imLayout $
+  onWorkspace "7:skype" skypeLayouts $
   onWorkspace "8:float" floatLayout $
   defaultLayouts
   where
@@ -61,6 +64,7 @@ workspaceLayouts =
     -- using mod-Space.  'Mirror' applies a 90-degree rotation to a layout.
     codeLayouts = fixedLayout ||| tiledLayout ||| Mirror tiledLayout
     webLayouts = tiledLayout ||| Mirror tiledLayout
+    skypeLayouts = skypeLayout ||| defaultLayouts
     defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout |||
                      floatLayout
 
@@ -71,6 +75,10 @@ workspaceLayouts =
     -- A layout for instant messaging.  Devote 1/6th of the screen to
     -- the Buddy List, and arrange other windows in a grid.
     imLayout = withIM (1/6) (Title "Buddy List") Grid
+
+    -- Another IM layout, for use with Skype.
+    skypeLayout = withIM (1/6) skypeMainWindow Grid
+    skypeMainWindow = And (Resource "skype") (Role "MainWindow")
 
     -- A simple floating-window layout.  This isn't particularly good,
     -- to be honest, but further configuration might improve it.
