@@ -15,13 +15,13 @@ import XMonad.Config.Gnome
 import XMonad.ManageHook
 import XMonad.Util.EZConfig
 
-myWorkspaces = ["1:code", "2:web", "3:im", "4:float"] ++ map show [5..9]
+myWorkspaces = ["1:code", "2:web", "3:im", "4", "5", "6", "7", "8:float", "9"]
 
 myManageHook = composeAll
   [ resource =? "Do" --> doIgnore
   , resource =? "empathy" --> doShift "3:im"   -- Mysteriously fails.
   , resource =? "xclock" --> doShift "3:im"    -- For testing.  It works.
-  , resource =? "gimp-2.6" --> doShift "4:float"
+  , resource =? "gimp-2.6" --> doShift "8:float"
   , manageHook gnomeConfig ]
 
 -- Copied from standard xmonad.hs template config.
@@ -41,7 +41,7 @@ workspaceLayouts =
   onWorkspace "1:code" codeLayouts $
   onWorkspace "2:web" webLayouts $
   onWorkspace "3:im" imLayout $
-  onWorkspace "4:float" floatLayout $
+  onWorkspace "8:float" floatLayout $
   defaultLayouts
   where
     -- An 80-column fixed layout for Emacs and terminals.
