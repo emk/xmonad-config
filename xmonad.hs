@@ -61,7 +61,8 @@ workspaceLayouts =
     -- using mod-Space.  'Mirror' applies a 90-degree rotation to a layout.
     codeLayouts = fixedLayout ||| tiledLayout ||| Mirror tiledLayout
     webLayouts = tiledLayout ||| Mirror tiledLayout
-    defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout
+    defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout |||
+                     floatLayout
 
     -- An 80-column fixed layout for Emacs and terminals.  The master
     -- pane will resize so that the contained window is 80 columns wide.
