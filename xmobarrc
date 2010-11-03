@@ -1,0 +1,19 @@
+-- xmobar configuration.  Originally based on:
+-- http://arjuna.deltoso.net/articles/my-configuration-of-xmonad-window-manager-with-xmobar-and-trayer/
+-- Colors adapted to match Ubuntu 10.10 "Clearlooks" theme.
+
+Config { font = "-misc-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
+       , bgColor = "#edeceb"
+       , fgColor = "black"
+       , position = Bottom
+       , lowerOnStart = True
+       , commands = [ Run Network "eth0" ["-L","0","-H","32","--normal","darkgreen","--high","darkred"] 10
+                    , Run Cpu ["-L","15","-H","50","--normal","darkgreen","--high","darkred"] 10
+                    , Run Memory [] 10
+                    , Run Swap [] 10
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ %cpu% | %memory% * %swap% | %eth0%"
+       }
