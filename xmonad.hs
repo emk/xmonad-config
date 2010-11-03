@@ -68,10 +68,12 @@ workspaceLayouts =
     -- pane will resize so that the contained window is 80 columns wide.
     fixedLayout = FixedColumn 1 20 80 10
 
-    -- A layout for instant messaging.
+    -- A layout for instant messaging.  Devote 1/6th of the screen to
+    -- the Buddy List, and arrange other windows in a grid.
     imLayout = withIM (1/6) (Title "Buddy List") Grid
 
-    -- A simple floating-window layout.
+    -- A simple floating-window layout.  This isn't particularly good,
+    -- to be honest, but further configuration might improve it.
     floatLayout = windowArrange simpleFloat
 
 -- Hook up my layouts.  We apply 'toggleLayouts' so that we can switch any
