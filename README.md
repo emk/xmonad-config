@@ -26,7 +26,7 @@ several special workspaces:
 This _should_ give you everything you need:
 
     sudo apt-get install xmonad libghc6-xmonad-dev libghc6-xmonad-contrib-dev \
-        xmobar gnome-go pidgin
+        xmobar gnome-go pidgin git
     git clone http://github.com/emk/xmonad-config.git
 
 Set up some symlinks so `xmonad` and `xmobar` can find their configuration
