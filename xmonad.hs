@@ -22,6 +22,10 @@ import XMonad.Util.EZConfig
 -- custom key bindings if I want more than 9.
 myWorkspaces = ["1:code", "2:web", "3:im", "4", "5", "6", "7", "8:float", "9"]
 
+-- Colors from the Ubuntu 10.10 "Clearlooks" theme.
+themeBackground = "#edeceb"
+themeHighlight  = "#84a9d7"
+
 -- Rules which are applied to each new window.  The (optional) part before
 -- '-->' is a matching rule.  The rest is an action to perform.
 myManageHook = composeAll
@@ -92,10 +96,10 @@ myLogHook xmobarPipe = dynamicLogWithPP xmobarPrinter
   where
     xmobarPrinter = defaultPP
       { ppOutput  = hPutStrLn xmobarPipe
-      , ppCurrent = xmobarColor "white" "#84a9d7" . wrap "[" "]"
+      , ppCurrent = xmobarColor "white" themeHighlight . wrap "[" "]"
       , ppTitle   = xmobarColor "darkgreen"  "" . shorten 40
       , ppVisible = wrap "(" ")"
-      , ppUrgent  = xmobarColor "red" "#84a9d7" }
+      , ppUrgent  = xmobarColor "red" themeHighlight }
 
 -- Create a new configuration structure.  I start with the standard
 -- 'gnomeConfig', override several fields, and then use EZConfig to patch
@@ -106,6 +110,8 @@ myConfig xmobarPipe =
     , layoutHook = myLayout
     , manageHook = myManageHook
     , logHook    = myLogHook xmobarPipe
+    , normalBorderColor  = themeBackground
+    , focusedBorderColor = themeHighlight
     , modMask    = mod3Mask }
   `additionalKeysP` myKeys
 
