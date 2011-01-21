@@ -3,12 +3,12 @@
 -- Colors adapted to match Ubuntu 10.10 "Clearlooks" theme.
 
 Config { font = "-misc-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
-       , bgColor = "#edeceb"
-       , fgColor = "black"
+       , bgColor = "#3c3b37" --"#edeceb"
+       , fgColor = "white"
        , position = Bottom
        , lowerOnStart = True
-       , commands = [ Run Network "eth0" ["-L","0","-H","32","--normal","darkgreen","--high","darkred"] 10
-                    , Run Cpu ["-L","15","-H","50","--normal","darkgreen","--high","darkred"] 10
+       , commands = [ Run Network "eth0" ["-L","0","-H","32","--normal","lightgreen","--high","lightred"] 10
+                    , Run Cpu ["-L","15","-H","50","--normal","lightgreen","--high","lightred"] 10
                     , Run Memory [] 10
                     , Run Swap [] 10
                     , Run StdinReader

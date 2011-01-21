@@ -23,9 +23,12 @@ import XMonad.Util.EZConfig
 myWorkspaces = ["1:code", "2:web", "3:im", "4", "5",
                 "6", "7:skype", "8:float", "9"]
 
+-- Colors from the default Ubuntu 10.10 theme.
+themeBackground = "#3c3b37"
+themeHighlight  = "#f07746"
 -- Colors from the Ubuntu 10.10 "Clearlooks" theme.
-themeBackground = "#edeceb"
-themeHighlight  = "#84a9d7"
+--themeBackground = "#edeceb"
+--themeHighlight  = "#84a9d7"
 
 -- Rules which are applied to each new window.  The (optional) part before
 -- '-->' is a matching rule.  The rest is an action to perform.
@@ -107,8 +110,8 @@ myLogHook xmobarPipe = dynamicLogWithPP xmobarPrinter
   where
     xmobarPrinter = defaultPP
       { ppOutput  = hPutStrLn xmobarPipe
-      , ppCurrent = xmobarColor "white" themeHighlight . wrap "[" "]"
-      , ppTitle   = xmobarColor "darkgreen"  "" . shorten 40
+      , ppCurrent = xmobarColor "black" themeHighlight . wrap "[" "]"
+      , ppTitle   = xmobarColor "green"  "" . shorten 80
       , ppVisible = wrap "(" ")"
       , ppUrgent  = xmobarColor "red" themeHighlight }
 
