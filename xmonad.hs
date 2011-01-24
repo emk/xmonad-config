@@ -92,12 +92,14 @@ workspaceLayouts =
 
     -- A specialized layout for the Gimp, which is otherwise annoying to
     -- use with Xmonad.  Based on
-    -- http://nathanhowell.net/2009/03/08/xmonad-and-the-gimp but with tabbed
-    -- windows.
+    -- http://nathanhowell.net/2009/03/08/xmonad-and-the-gimp .  Ideally,
+    -- we'd prefer simpleTabbed to Full, but that causes nasty focus
+    -- issues, because the tabbed layout looses track of what window should
+    -- be visible every time we focus the withIM windows.
     gimpLayout = named "Gimp" $
                  withIM (0.130) (Role "gimp-toolbox") $
                  reflectHoriz $
-                 withIM (0.2) (Role "gimp-dock") simpleTabbed
+                 withIM (0.2) (Role "gimp-dock") Full
 
 -- Hook up my layouts.  We apply 'toggleLayouts' so that we can switch any
 -- window into or out of full-screen mode with a single command (see
