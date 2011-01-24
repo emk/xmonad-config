@@ -7,6 +7,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Layout.FixedColumn
 import XMonad.Layout.Grid
 import XMonad.Layout.IM
+import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Reflect
@@ -93,7 +94,8 @@ workspaceLayouts =
     -- use with Xmonad.  Based on
     -- http://nathanhowell.net/2009/03/08/xmonad-and-the-gimp but with tabbed
     -- windows.
-    gimpLayout = withIM (0.130) (Role "gimp-toolbox") $
+    gimpLayout = named "Gimp" $
+                 withIM (0.130) (Role "gimp-toolbox") $
                  reflectHoriz $
                  withIM (0.2) (Role "gimp-dock") simpleTabbed
 
