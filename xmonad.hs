@@ -9,7 +9,9 @@ import XMonad.Layout.Grid
 import XMonad.Layout.IM
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Reflect
 import XMonad.Layout.SimpleFloat
+import XMonad.Layout.Tabbed
 import XMonad.Layout.ToggleLayouts
 import XMonad.Layout.WindowArranger
 import XMonad.ManageHook
@@ -21,7 +23,7 @@ import XMonad.Util.EZConfig
 -- The names of my workspaces.  These are arbitrary, though I need to add
 -- custom key bindings if I want more than 9.
 myWorkspaces = ["1:code", "2:web", "3:im", "4", "5",
-                "6", "7:skype", "8:float", "9"]
+                "6", "7:skype", "8:gimp", "9"]
 
 -- Colors from the default Ubuntu 10.10 theme.
 themeBackground = "#3c3b37"
@@ -36,7 +38,7 @@ myManageHook = composeAll
   [ resource =? "Do"       --> doIgnore           -- Leave Gnome Do alone.
   , resource =? "Pidgin"   --> doShift "3:im"     -- Force to IM workspace.
   , resource =? "skype"    --> doShift "7:skype"  -- Force to Skype workspace.
-  , resource =? "gimp-2.6" --> doShift "8:float"  -- Special-case the GIMP.
+  , resource =? "gimp-2.6" --> doShift "8:gimp"   -- Special-case the GIMP.
   , manageDocks                                   -- For xmobar and gnome-panel.
   , manageHook gnomeConfig ]                      -- Gnome defaults.
 
@@ -60,7 +62,7 @@ workspaceLayouts =
   onWorkspace "2:web" webLayouts $
   onWorkspace "3:im" imLayout $
   onWorkspace "7:skype" skypeLayouts $
-  onWorkspace "8:float" floatLayout $
+  onWorkspace "8:gimp" gimpLayout $
   defaultLayouts
   where
     -- Combinations of our available layouts, which we can cycle through
@@ -69,7 +71,7 @@ workspaceLayouts =
     webLayouts = tiledLayout ||| Mirror tiledLayout
     skypeLayouts = skypeLayout ||| defaultLayouts
     defaultLayouts = tiledLayout ||| Mirror tiledLayout ||| fixedLayout |||
-                     floatLayout
+                     floatLayout ||| simpleTabbed
 
     -- An 80-column fixed layout for Emacs and terminals.  The master
     -- pane will resize so that the contained window is 80 columns wide.
@@ -86,6 +88,14 @@ workspaceLayouts =
     -- A simple floating-window layout.  This isn't particularly good,
     -- to be honest, but further configuration might improve it.
     floatLayout = windowArrange simpleFloat
+
+    -- A specialized layout for the Gimp, which is otherwise annoying to
+    -- use with Xmonad.  Based on
+    -- http://nathanhowell.net/2009/03/08/xmonad-and-the-gimp but with tabbed
+    -- windows.
+    gimpLayout = withIM (0.130) (Role "gimp-toolbox") $
+                 reflectHoriz $
+                 withIM (0.2) (Role "gimp-dock") simpleTabbed
 
 -- Hook up my layouts.  We apply 'toggleLayouts' so that we can switch any
 -- window into or out of full-screen mode with a single command (see
