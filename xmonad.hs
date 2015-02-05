@@ -3,7 +3,9 @@ import XMonad
 import XMonad.Actions.GridSelect
 import XMonad.Config.Gnome
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ICCCMFocus
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 import XMonad.Layout.FixedColumn
 import XMonad.Layout.Grid
 import XMonad.Layout.IM
@@ -63,7 +65,7 @@ workspaceLayouts =
   onWorkspace "2:web" webLayouts $
   onWorkspace "3:im" imLayout $
   onWorkspace "7:skype" skypeLayouts $
-  onWorkspace "8:gimp" gimpLayout $
+  --onWorkspace "8:gimp" gimpLayout $
   defaultLayouts
   where
     -- Combinations of our available layouts, which we can cycle through
@@ -80,26 +82,18 @@ workspaceLayouts =
 
     -- A layout for instant messaging.  Devote 1/6th of the screen to
     -- the Buddy List, and arrange other windows in a grid.
-    imLayout = withIM (1/6) (Title "Buddy List") Grid
+    imLayout = withIM (1/6) (Or (Title "Liste de contacts")
+                                (Title "Buddy List")) Grid
 
     -- Another IM layout, for use with Skype.
     skypeLayout = withIM (1/6) skypeMainWindow Grid
-    skypeMainWindow = And (Resource "skype") (Role "MainWindow")
+    skypeMainWindow = (And (Resource "skype")
+                           (Not (Or (Title "Transferts de fichiers")
+                                    (Role "ConversationsWindow"))))
 
     -- A simple floating-window layout.  This isn't particularly good,
     -- to be honest, but further configuration might improve it.
     floatLayout = windowArrange simpleFloat
-
-    -- A specialized layout for the Gimp, which is otherwise annoying to
-    -- use with Xmonad.  Based on
-    -- http://nathanhowell.net/2009/03/08/xmonad-and-the-gimp .  Ideally,
-    -- we'd prefer simpleTabbed to Full, but that causes nasty focus
-    -- issues, because the tabbed layout looses track of what window should
-    -- be visible every time we focus the withIM windows.
-    gimpLayout = named "Gimp" $
-                 withIM (0.130) (Role "gimp-toolbox") $
-                 reflectHoriz $
-                 withIM (0.2) (Role "gimp-dock") Full
 
 -- Hook up my layouts.  We apply 'toggleLayouts' so that we can switch any
 -- window into or out of full-screen mode with a single command (see
@@ -120,7 +114,10 @@ myKeys =
 -- override the colors to match the Ubuntu 10.10 "Clearlooks" theme.
 -- Note that we assume "position = Bottom" appears in your xmobar config,
 -- and that the Gnome bottom panel has been removed.
-myLogHook xmobarPipe = dynamicLogWithPP xmobarPrinter
+--
+-- takeTopFocus is for playing nicely with certain Java apps, as explained
+-- at http://www.willprice.org/2012/11/07/processing-and-xmonad.html
+myLogHook xmobarPipe = dynamicLogWithPP xmobarPrinter >> takeTopFocus
   where
     xmobarPrinter = defaultPP
       { ppOutput  = hPutStrLn xmobarPipe
@@ -138,6 +135,8 @@ myConfig xmobarPipe =
     , layoutHook = myLayout
     , manageHook = myManageHook
     , logHook    = myLogHook xmobarPipe
+    -- Helps with certain Java apps, if I recall correctly.
+    , startupHook = setWMName "LG3D"
     , normalBorderColor  = themeBackground
     , focusedBorderColor = themeHighlight
     , modMask    = mod3Mask }
